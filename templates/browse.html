@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% from '_macros.html' import card %}
+{% block title %}Home - Team Netflix{% endblock %}
+{% block content %}
+{% if hero %}
+<section class="hero" style="--hero-img:url('{{ hero.poster }}')">
+  <div>
+    <h1>{{ hero.title }}</h1>
+    <p>{{ hero.genre }} · {{ runtime_text(hero.kind, hero.duration) }} · {{ 'Series' if hero.kind == 'tv' else 'Film' }}</p>
+    <a class="btn" href="{{ url_for('title', kind=hero.kind, tid=hero.id) }}">More info</a>
+  </div>
+</section>
+{% endif %}
+{% for label, items in rows %}
+  <h2 class="row-title">{{ label }}</h2>
+  <div class="row">{% for t in items %}{{ card(t) }}{% endfor %}</div>
+{% else %}
+  <p class="muted">Nothing to show yet.</p>
+{% endfor %}
+{% endblock %}

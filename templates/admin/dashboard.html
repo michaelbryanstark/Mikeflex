@@ -1,0 +1,29 @@
+{% extends 'admin/base.html' %}
+{% block admin %}
+<h1>Admin dashboard</h1>
+<div class="stat-grid">
+  {% for label, n in stats %}<div class="stat"><b>{{ n }}</b><span>{{ label }}</span></div>{% endfor %}
+</div>
+<div class="two-col">
+  <div class="panel">
+    <h2>Plans</h2>
+    <table><thead><tr><th>Plan</th><th>Price</th><th>Accounts</th></tr></thead><tbody>
+      {% for p in plans %}<tr><td>{{ p.plan }}</td><td>${{ '%.2f'|format(p.price or 0) }} / {{ p.months }} mo</td><td>{{ p.accounts }}</td></tr>{% endfor %}
+    </tbody></table>
+    <p class="muted" style="margin-bottom:0">Estimated monthly revenue: <b style="color:var(--text)">${{ '%.2f'|format(monthly) }}</b></p>
+  </div>
+  <div class="panel">
+    <h2>Most watched</h2>
+    <table><thead><tr><th>Title</th><th>Type</th><th>Views</th></tr></thead><tbody>
+      {% for r in top %}<tr><td>{{ r.title }}</td><td>{{ r.kind }}</td><td>{{ r.n }}</td></tr>
+      {% else %}<tr><td colspan="3" class="muted">No watch activity yet.</td></tr>{% endfor %}
+    </tbody></table>
+  </div>
+  <div class="panel">
+    <h2>Newest accounts</h2>
+    <table><thead><tr><th>ID</th><th>Email</th><th>Created</th></tr></thead><tbody>
+      {% for r in recent %}<tr><td>{{ r.id }}</td><td>{{ r.email }}</td><td>{{ r.account_created }}</td></tr>{% endfor %}
+    </tbody></table>
+  </div>
+</div>
+{% endblock %}

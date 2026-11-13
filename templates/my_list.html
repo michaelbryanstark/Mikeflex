@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% from '_macros.html' import card %}
+{% block title %}My List - Team Netflix{% endblock %}
+{% block content %}
+<h1>My List</h1>
+<h2>Liked</h2>
+{% if liked %}<div class="grid">{% for t in liked %}{{ card(t) }}{% endfor %}</div>
+{% else %}<p class="muted">Titles you like will show up here.</p>{% endif %}
+<h2>Watched</h2>
+{% if watched %}<div class="grid">{% for t in watched %}{{ card(t) }}{% endfor %}</div>
+{% else %}<p class="muted">Mark titles as watched from their page.</p>{% endif %}
+{% endblock %}

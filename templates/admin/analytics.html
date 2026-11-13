@@ -1,0 +1,13 @@
+{% extends 'admin/base.html' %}
+{% block admin %}
+<h1>Who watched which films</h1>
+<div class="panel">
+  <h2>{{ rows|length }} result{{ 's' if rows|length != 1 }}</h2>
+  {% if rows %}
+  <div class="table-wrap"><table>
+    <thead><tr><th>Film</th><th>Account ID</th><th>Email</th></tr></thead>
+    <tbody>{% for r in rows %}<tr><td>{{ r.film_title }}</td><td>{{ r.account_id }}</td><td>{{ r.email }}</td></tr>{% endfor %}</tbody>
+  </table></div>
+  {% else %}<p class="muted">No watch activity yet.</p>{% endif %}
+</div>
+{% endblock %}

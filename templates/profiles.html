@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}{{ 'Manage profiles' if manage else "Who's watching?" }} - Team Netflix{% endblock %}
+{% block content %}
+<div class="center-page">
+  <h1>{{ 'Manage profiles' if manage else "Who's watching?" }}</h1>
+  <div class="profile-grid">
+    {% for p in profiles %}
+      <a class="profile-tile {{ 'manage' if manage }}"
+         href="{{ url_for('edit_profile', pid=p.profile_id) if manage else url_for('select_profile', pid=p.profile_id) }}">
+        <img src="{{ avatar_url(p.profile_picture) }}" alt="">
+        {% if p.is_kid_profile %}<span class="badge">KIDS</span>{% endif %}
+        <span>{{ '✎ ' if manage }}{{ p.profile_name }}</span>
+      </a>
+    {% endfor %}
+    {% if can_add %}
+      <a class="profile-tile add" href="{{ url_for('new_profile') }}">
+        <div class="plus">+</div><span>Add profile</span>
+      </a>
+    {% endif %}
+  </div>
+  {% if manage %}<a class="btn" href="{{ url_for('profiles') }}">Done</a>
+  {% else %}<a class="btn ghost" href="{{ url_for('profiles', manage=1) }}">Manage profiles</a>{% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% from '_macros.html' import csrf_field %}
+{% block title %}Account - Team Netflix{% endblock %}
+{% block content %}
+<div class="form-card" style="max-width:640px">
+  <h1>Account</h1>
+  <div class="panel">
+    <h2>Membership</h2>
+    <p><b>Email:</b> {{ g.account.email }}<br>
+       {% if g.account.phone_number %}<b>Phone:</b> {{ g.account.phone_number }}<br>{% endif %}
+       <b>Member since:</b> {{ (g.account.account_created or '')[:10] }}<br>
+       <b>Plan:</b> {% if sub %}{{ sub.subscription_type|title }} · ${{ '%.2f'|format(sub.subscription_price or 0) }}
+         every {{ sub.subscription_duration }} month{{ 's' if sub.subscription_duration != 1 }}{% else %}—{% endif %}</p>
+  </div>
+  <div class="panel">
+    <h2>Change password</h2>
+    <form method="post">{{ csrf_field() }}
+      <div class="field"><label for="current">Current password</label><input id="current" name="current" type="password" required autocomplete="current-password"></div>
+      <div class="field"><label for="new">New password (8+ characters)</label><input id="new" name="new" type="password" required minlength="8" autocomplete="new-password"></div>
+      <div class="field"><label for="again">Repeat new password</label><input id="again" name="again" type="password" required minlength="8" autocomplete="new-password"></div>
+      <button class="btn" type="submit">Update password</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

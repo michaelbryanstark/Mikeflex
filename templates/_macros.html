@@ -1,0 +1,26 @@
+{% macro card(t) -%}
+<a class="card" href="{{ url_for('title', kind=t.kind, tid=t.id) }}" title="{{ t.title }}">
+  <img src="{{ t.poster }}" alt="{{ t.title }} poster" loading="lazy">
+  <div class="t">{{ t.title }}</div>
+</a>
+{%- endmacro %}
+
+{% macro csrf_field() -%}<input type="hidden" name="csrf" value="{{ csrf() }}">{%- endmacro %}
+
+{% macro admin_field(f, value='') -%}
+<div class="field">
+  <label for="{{ f.name }}">{{ f.label }}{% if f.required %} *{% endif %}</label>
+  {% if f.options is not none %}
+    <select id="{{ f.name }}" name="{{ f.name }}" {{ 'required' if f.required }}>
+      <option value="">-- choose --</option>
+      {% for v, text in f.options %}<option value="{{ v }}" {{ 'selected' if value|string == v|string and value != '' }}>{{ text }}</option>{% endfor %}
+    </select>
+  {% else %}
+    <input id="{{ f.name }}" name="{{ f.name }}" type="{{ f.input }}" value="{{ value if f.input != 'password' else '' }}"
+           {% if f.step %}step="{{ f.step }}"{% endif %}
+           {% if f.hint %}placeholder="{{ f.hint }}"{% endif %}
+           {{ 'required' if f.required and f.input != 'password' }}>
+    {% if f.file %}<input type="file" name="{{ f.name }}__file" accept="image/png,image/jpeg,image/gif,image/webp" style="margin-top:.4rem">{% endif %}
+  {% endif %}
+</div>
+{%- endmacro %}

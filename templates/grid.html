@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% from '_macros.html' import card %}
+{% block title %}{{ heading }} - Team Netflix{% endblock %}
+{% block content %}
+<h1>{{ heading }}</h1>
+{% if titles %}<div class="grid">{% for t in titles %}{{ card(t) }}{% endfor %}</div>
+{% else %}<p class="muted">{{ empty }}</p>{% endif %}
+{% endblock %}

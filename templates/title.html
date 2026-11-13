@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% from '_macros.html' import card, csrf_field %}
+{% block title %}{{ t.title }} - Team Netflix{% endblock %}
+{% block content %}
+<div class="title-page">
+  <img class="poster" src="{{ poster }}" alt="{{ t.title }} poster">
+  <div>
+    <h1>{{ t.title }}</h1>
+    <div class="meta">
+      <span class="pill">{{ 'Series' if kind == 'tv' else 'Film' }}</span>
+      {% if t.genre %}<span class="pill">{{ t.genre }}</span>{% endif %}
+      {% if t.duration %}<span class="pill">{{ runtime_text(kind, t.duration) }}</span>{% endif %}
+    </div>
+    <div class="actions">
+      <form method="post" action="{{ url_for('toggle_watched', kind=kind, tid=t.id) }}">{{ csrf_field() }}
+        <button class="btn {{ 'on' if watched }}" type="submit">{{ '✓ Watched' if watched else 'Mark as watched' }}</button></form>
+      <form method="post" action="{{ url_for('set_like', kind=kind, tid=t.id) }}">{{ csrf_field() }}
+        <input type="hidden" name="action" value="{{ 'clear' if liked is true else 'like' }}">
+        <button class="btn ghost {{ 'on' if liked is true }}" type="submit" aria-pressed="{{ 'true' if liked is true else 'false' }}">👍 {{ 'Liked' if liked is true else 'Like' }}</button></form>
+      <form method="post" action="{{ url_for('set_like', kind=kind, tid=t.id) }}">{{ csrf_field() }}
+        <input type="hidden" name="action" value="{{ 'clear' if liked is false else 'dislike' }}">
+        <button class="btn ghost {{ 'on' if liked is false }}" type="submit" aria-pressed="{{ 'true' if liked is false else 'false' }}">👎 {{ 'Not for me' if liked is false else 'Dislike' }}</button></form>
+    </div>
+    <dl class="credits">
+      <dt>{{ 'Created by' if kind == 'tv' else 'Directed by' }}</dt><dd>{{ directors|join(', ') or '—' }}</dd>
+      <dt>Starring</dt><dd>{{ cast|join(', ') or '—' }}</dd>
+    </dl>
+  </div>
+</div>
+{% if similar %}
+  <h2 class="row-title">More {{ t.genre }}</h2>
+  <div class="row">{% for s in similar %}{{ card(s) }}{% endfor %}</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,52 @@
+{% from '_macros.html' import csrf_field %}
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}Team Netflix{% endblock %}</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+{% block topbar %}
+<header class="topbar">
+  <a class="brand" href="{{ url_for('home') }}">TEAM NETFLIX</a>
+  {% if g.account %}
+    {% if g.profile %}
+    <nav>
+      <a href="{{ url_for('browse') }}" class="{{ 'active' if request.endpoint == 'browse' }}">Home</a>
+      <a href="{{ url_for('my_list') }}" class="{{ 'active' if request.endpoint == 'my_list' }}">My List</a>
+    </nav>
+    {% endif %}
+    <div class="spacer"></div>
+    {% if g.profile %}
+    <form class="searchform" action="{{ url_for('search') }}" method="get">
+      <input type="search" name="q" placeholder="Titles, actors, directors" value="{{ q or '' }}" aria-label="Search">
+    </form>
+    {% endif %}
+    <details class="menu">
+      <summary>
+        {% if g.profile %}<img class="avatar-sm" src="{{ avatar_url(g.profile.profile_picture) }}" alt="">{% else %}<span>Menu</span>{% endif %}
+        <span aria-hidden="true">▾</span>
+      </summary>
+      <div class="menu-panel">
+        {% if g.profile %}<span class="muted" style="padding:.4rem .7rem">{{ g.profile.profile_name }}</span>{% endif %}
+        <a href="{{ url_for('profiles') }}">Switch profile</a>
+        <a href="{{ url_for('profiles', manage=1) }}">Manage profiles</a>
+        <a href="{{ url_for('account') }}">Account</a>
+        {% if g.account.is_admin %}<a href="{{ url_for('admin_home') }}">Admin dashboard</a>{% endif %}
+        <hr>
+        <form method="post" action="{{ url_for('logout') }}">{{ csrf_field() }}<button type="submit">Sign out</button></form>
+      </div>
+    </details>
+  {% endif %}
+</header>
+{% endblock %}
+<div class="flashes">
+  {% for category, msg in get_flashed_messages(with_categories=true) %}
+    <div class="flash {{ 'ok' if category == 'ok' }}" role="status">{{ msg }}</div>
+  {% endfor %}
+</div>
+{% block body %}<main>{% block content %}{% endblock %}</main>{% endblock %}
+</body>
+</html>

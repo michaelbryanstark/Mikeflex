@@ -1,0 +1,42 @@
+{% extends 'admin/base.html' %}
+{% from '_macros.html' import csrf_field, admin_field %}
+{% block admin %}
+<h1>{{ page_name }}</h1>
+<div class="panel">
+  <h2>Add to {{ page_name }}</h2>
+  <form class="add" method="post" enctype="multipart/form-data">
+    {{ csrf_field() }}
+    {% for f in fields %}{{ admin_field(f) }}{% endfor %}
+    <button class="btn" type="submit">Add</button>
+  </form>
+</div>
+<div class="panel">
+  <h2>{{ total }} row{{ 's' if total != 1 }}</h2>
+  {% if rows %}
+  <div class="table-wrap"><table>
+    <thead><tr>{% for f in fields %}<th>{{ f.label }}</th>{% endfor %}<th></th></tr></thead>
+    <tbody>
+    {% for row in rows %}
+      <tr>
+        {% for cell in row.cells %}
+          <td>{% if cell is mapping %}<img class="thumb {{ '' if cell.wide else 'sq' }}" src="{{ cell.img }}" alt="">{% else %}{{ cell }}{% endif %}</td>
+        {% endfor %}
+        <td><div class="row-actions">
+          <a href="{{ url_for('admin_edit', table=page_name, rowid=row.rowid) }}">Edit</a>
+          <form method="post" action="{{ url_for('admin_delete', table=page_name, rowid=row.rowid) }}"
+                onsubmit="return confirm('Delete this row?')">{{ csrf_field() }}<button class="linkbtn" type="submit">Delete</button></form>
+        </div></td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table></div>
+  {% if pages > 1 %}
+  <div class="pager">
+    {% if page > 1 %}<a href="{{ url_for('admin_table', table=page_name, p=page-1) }}">← Previous</a>{% endif %}
+    <span>Page {{ page }} of {{ pages }}</span>
+    {% if page < pages %}<a href="{{ url_for('admin_table', table=page_name, p=page+1) }}">Next →</a>{% endif %}
+  </div>
+  {% endif %}
+  {% else %}<p class="muted">No rows yet.</p>{% endif %}
+</div>
+{% endblock %}
