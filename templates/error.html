@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
-{% block title %}{{ code }} - Team Netflix{% endblock %}
+{% block title %}{{ code }} - Mikeflex{% endblock %}
 {% block content %}
-<div class="errorpage"><h1>{{ code }}</h1><p>{{ message }}</p>
-  <a class="btn" href="{{ url_for('home') }}">Go home</a></div>
+<div class="errorpage">
+  <h1>{{ code }}</h1>
+  <p>{{ message }}</p>
+  <a class="btn" href="{{ url_for('home') }}">Go home</a>
+</div>
 {% endblock %}

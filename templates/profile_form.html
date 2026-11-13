@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% from '_macros.html' import csrf_field %}
-{% block title %}{{ 'Edit profile' if profile else 'Add profile' }} - Team Netflix{% endblock %}
+{% block title %}{{ 'Edit profile' if profile else 'Add profile' }} - Mikeflex{% endblock %}
 {% block content %}
 <div class="form-card">
   <h1>{{ 'Edit profile' if profile else 'Add profile' }}</h1>
@@ -9,15 +9,15 @@
     <div class="field">
       <label for="profile_name">Name</label>
       <input id="profile_name" name="profile_name" type="text" maxlength="30" required
-             value="{{ request.form.get('profile_name', profile.profile_name if profile else '') }}">
+        value="{{ request.form.get('profile_name', profile.profile_name if profile else '') }}">
     </div>
 
     <label>Choose an avatar</label>
     <div class="avatar-picker" role="radiogroup">
       {% set cur = profile.profile_picture if profile else 'avatar_gray.png' %}
       {% for a in default_avatars %}
-        <label><input type="radio" name="avatar" value="{{ a }}" {{ 'checked' if a == cur }}>
-          <img src="{{ avatar_url(a) }}" alt="{{ a[7:-4] }} avatar"></label>
+      <label><input type="radio" name="avatar" value="{{ a }}" {{ 'checked' if a==cur }}>
+        <img src="{{ avatar_url(a) }}" alt="{{ a[7:-4] }} avatar"></label>
       {% endfor %}
     </div>
 
@@ -30,7 +30,8 @@
     </div>
 
     <div class="field">
-      <label class="checkrow"><input type="checkbox" name="is_kid_profile" {{ 'checked' if profile and profile.is_kid_profile }}>
+      <label class="checkrow"><input type="checkbox" name="is_kid_profile" {{ 'checked' if profile and
+          profile.is_kid_profile }}>
         Kids profile (hides horror, thriller, crime and war titles)</label>
     </div>
 
@@ -41,7 +42,7 @@
   </form>
   {% if profile %}
   <form method="post" action="{{ url_for('delete_profile', pid=profile.profile_id) }}" style="margin-top:1.4rem"
-        onsubmit="return confirm('Delete this profile?')">
+    onsubmit="return confirm('Delete this profile?')">
     {{ csrf_field() }}<button class="btn danger" type="submit">Delete profile</button>
   </form>
   {% endif %}
@@ -50,6 +51,7 @@
   const input = document.getElementById('picture'), prev = document.getElementById('preview');
   input.addEventListener('change', () => { const f = input.files[0]; if (f) prev.src = URL.createObjectURL(f); });
   document.querySelectorAll('input[name=avatar]').forEach(r => r.addEventListener('change', () => {
-    prev.src = r.nextElementSibling.src; input.value = ''; }));
+    prev.src = r.nextElementSibling.src; input.value = '';
+  }));
 </script>
 {% endblock %}

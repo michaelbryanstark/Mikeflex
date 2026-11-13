@@ -1,38 +1,55 @@
 {% from '_macros.html' import csrf_field %}
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sign up - Team Netflix</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"></head>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sign up - Mikeflex</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
 <body>
-<div class="auth">
-  <form class="auth-card" method="post" style="max-width:460px">
-    <span class="brand">TEAM NETFLIX</span>
-    <h1 style="font-size:1.5rem;margin-top:0">Create your account</h1>
-    {% for category, msg in get_flashed_messages(with_categories=true) %}
+  <div class="auth">
+    <form class="auth-card" method="post" style="max-width:460px">
+      <span class="brand">Mikeflex</span>
+      <h1 style="font-size:1.5rem;margin-top:0">Create your account</h1>
+      {% for category, msg in get_flashed_messages(with_categories=true) %}
       <div class="flash {{ 'ok' if category == 'ok' }}" role="alert">{{ msg }}</div>
-    {% endfor %}
-    {{ csrf_field() }}
-    <div class="field"><label for="email">Email</label>
-      <input id="email" name="email" type="email" required autofocus value="{{ request.form.get('email','') }}"></div>
-    <div class="field"><label for="phone">Phone (optional)</label>
-      <input id="phone" name="phone" type="text" inputmode="tel" value="{{ request.form.get('phone','') }}"></div>
-    <div class="field"><label for="password">Password (8+ characters)</label>
-      <input id="password" name="password" type="password" required minlength="8" autocomplete="new-password"></div>
-    <div class="field"><label for="again">Repeat password</label>
-      <input id="again" name="again" type="password" required minlength="8" autocomplete="new-password"></div>
-    <div class="field"><label for="profile_name">Your first profile name</label>
-      <input id="profile_name" name="profile_name" type="text" maxlength="30" required value="{{ request.form.get('profile_name','') }}"></div>
-    <div class="field"><label for="plan">Plan</label>
-      <select id="plan" name="plan" required>
-        <option value="">-- choose a plan --</option>
-        {% for p in plans %}
-          <option value="{{ p.id }}" {{ 'selected' if request.form.get('plan') == p.id|string }}>
-            {{ p.subscription_type|title }} · ${{ '%.2f'|format(p.subscription_price or 0) }} every {{ p.subscription_duration }} month{{ 's' if p.subscription_duration != 1 }}
+      {% endfor %}
+      {{ csrf_field() }}
+      <div class="field"><label for="email">Email</label>
+        <input id="email" name="email" type="email" required autofocus value="{{ request.form.get('email','') }}">
+      </div>
+      <div class="field"><label for="phone">Phone (optional)</label>
+        <input id="phone" name="phone" type="text" inputmode="tel" value="{{ request.form.get('phone','') }}">
+      </div>
+      <div class="field"><label for="password">Password (8+ characters)</label>
+        <input id="password" name="password" type="password" required minlength="8" autocomplete="new-password">
+      </div>
+      <div class="field"><label for="again">Repeat password</label>
+        <input id="again" name="again" type="password" required minlength="8" autocomplete="new-password">
+      </div>
+      <div class="field"><label for="profile_name">Your first profile name</label>
+        <input id="profile_name" name="profile_name" type="text" maxlength="30" required
+          value="{{ request.form.get('profile_name','') }}">
+      </div>
+      <div class="field"><label for="plan">Plan</label>
+        <select id="plan" name="plan" required>
+          <option value="">-- choose a plan --</option>
+          {% for p in plans %}
+          <option value="{{ p.id }}" {{ 'selected' if request.form.get('plan')==p.id|string }}>
+            {{ p.subscription_type|title }} · ${{ '%.2f'|format(p.subscription_price or 0) }} every {{
+            p.subscription_duration }} month{{ 's' if p.subscription_duration != 1 }}
           </option>
-        {% endfor %}
-      </select></div>
-    <button class="btn" type="submit">Sign up</button>
-    <p class="muted" style="text-align:center;margin:1rem 0 0">Already have an account? <a href="{{ url_for('login') }}" style="color:var(--text)">Sign in</a></p>
-  </form>
-</div>
-</body></html>
+          {% endfor %}
+        </select>
+      </div>
+      <button class="btn" type="submit">Sign up</button>
+      <p class="muted" style="text-align:center;margin:1rem 0 0">Already have an account? <a
+          href="{{ url_for('login') }}" style="color:var(--text)">Sign in</a></p>
+    </form>
+  </div>
+</body>
+
+</html>
